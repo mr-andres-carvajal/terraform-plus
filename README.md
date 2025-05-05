@@ -1,3 +1,7 @@
 # Terraform Plus
 
-A minimal Docker image based on Alpine Linux, includes Terraform and AWS CLI
+A minimal Docker image based on Alpine Linux, includes:
+
+- Terraform
+- AWS CLI
+- Git
