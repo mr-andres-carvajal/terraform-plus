@@ -1,0 +1,25 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - '**' 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_USERNAME: andrescarvajal
+      DOCKER_IMAGE: terraform-plus
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Build the Docker image
+      - name: Build Docker image
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
+          echo "Building Docker image for branch: $BRANCH_NAME"
+          docker build -t ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:$BRANCH_NAME .

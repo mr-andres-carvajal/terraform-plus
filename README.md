@@ -1,2 +1,3 @@
-# terraform-plus
-Terraform image with additional executables, like AWS CLI
+# Terraform Plus
+
+A minimal Docker image based on Alpine Linux, includes Terraform and AWS CLI
