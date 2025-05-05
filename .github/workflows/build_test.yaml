@@ -20,5 +20,6 @@ jobs:
       # Step 2: Build the Docker image
       - name: Build Docker image
         run: |
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          docker build -t ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ BRANCH_NAME }} .
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
+          echo "Building Docker image for branch: $BRANCH_NAME"
+          docker build -t ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:$BRANCH_NAME .
