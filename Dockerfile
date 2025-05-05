@@ -15,4 +15,6 @@ RUN apk add --update --virtual .deps --no-cache gnupg && \
     rm -f /tmp/terraform_${TF_VERSION}_linux_amd64.zip terraform_${TF_VERSION}_SHA256SUMS ${TF_VERSION}/terraform_${TF_VERSION}_SHA256SUMS.sig && \
     apk del .deps
 
-run apk add --no-cache aws-cli
+RUN apk add --no-cache aws-cli git
+
+ENTRYPOINT ["terraform"]

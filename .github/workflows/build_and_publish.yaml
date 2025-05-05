@@ -14,11 +14,9 @@ jobs:
       DOCKER_IMAGE: terraform-plus
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Extract version from tag
       - name: Extract version from tag
         id: extract_version
         run: |
@@ -26,19 +24,24 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      # Step 3: Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 4: Build the Docker image
       - name: Build Docker image
         run: |
           docker build -t ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.VERSION }} . --build-arg TF_VERSION=${{ env.VERSION }}
 
-      # Step 5: Push the Docker image to Docker Hub
+      - name: Tag Docker image as latest
+        run: |
+          docker tag ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.VERSION }} ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest
+
       - name: Push Docker image
         run: |
           docker push ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
+
+      - name: Push Docker image with latest tag
+        run: |
+          docker push ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest
